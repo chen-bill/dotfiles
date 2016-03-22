@@ -23,6 +23,7 @@ Plugin 'wookiehangover/jshint.vim'
 Plugin 'scrooloose/syntastic'
 " Plugin 'Valloric/YouCompleteMe'           " autocomplete
 Plugin 'scrooloose/nerdtree'
+Plugin 'jeffkreeftmeijer/vim-numbertoggle'
 
 " language specific
 Plugin 'jelera/vim-javascript-syntax'   " javascript bracket matching
@@ -35,7 +36,7 @@ filetype plugin indent on
 syntax on
 
 " mappings
-map <leader>n :NERDTree<cr>
+map <F2> :NERDTreeToggle<cr>
 
 " Airline setings
 set laststatus=2
@@ -43,36 +44,12 @@ let g:airline_right_sep = ''
 let g:airline_left_sep = ''
 let g:airline_theme = 'bubblegum'
 
-" Line numbers
-nnoremap <leader>g :call NumberToggle()<cr>
-function! NumberToggle()
-    if(&relativenumber == 1)
-        set norelativenumber
-    else
-        set relativenumber
-    endif
-endfunc
-
-:au FocusLost * :set number
-:au FocusGained * :set relativenumber
-
 " tabs
 set tabstop=8 softtabstop=0 expandtab shiftwidth=4 smarttab
-
-" line numbers
-nnoremap <leader>l :call NumberToggle()<cr>
-function! NumberToggle()
-  if(&relativenumber == 1)
-    set number
-  else
-    set relativenumber
-  endif
-endfunc
 
 " pretty/UI
 set background=dark
 colorscheme hybrid
-set number
 set history=50		" keep 50 lines of command line history
 set ruler 		" shows cursor
 set showcmd		" display incomplete commands
@@ -94,7 +71,8 @@ let g:syntastic_check_on_wq = 0
 
 let g:syntastic_javascript_checkers = ['jshint']
 let g:syntastic_css_checkers = ['csslint']
-let g:syntastic_less_use_less_lint
+" let g:syntastic_mode_map = { 'passive_filetypes': ['python']  }
+" disables syntastic for python
 
 " Toggle paste mode
 set pastetoggle=<leader>p
