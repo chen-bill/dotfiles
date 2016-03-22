@@ -19,7 +19,10 @@ Plugin 'kien/ctrlp.vim'
 
 " Vim better
 Plugin 'scrooloose/nerdcommenter'
-Plugin 'plugin/youcompleteme'           " autocomplete
+Plugin 'wookiehangover/jshint.vim'
+Plugin 'scrooloose/syntastic'
+" Plugin 'Valloric/YouCompleteMe'           " autocomplete
+Plugin 'scrooloose/nerdtree'
 
 " language specific
 Plugin 'jelera/vim-javascript-syntax'   " javascript bracket matching
@@ -28,9 +31,6 @@ Plugin 'rstacruz/sparkup'               " html autocomplete, div <C+E>
 
 call vundle#end()         
 filetype plugin indent on
-
-execute pathogen#infect()
-call pathogen#helptags()
 
 syntax on
 
@@ -76,7 +76,25 @@ set number
 set history=50		" keep 50 lines of command line history
 set ruler 		" shows cursor
 set showcmd		" display incomplete commands
+
+" search
+set ignorecase          " ignorecase for search
+set smartcase           " case sensitive if at least one is capitalized
 set incsearch		" do incremental searching
+
+" syntastic settings
+set statusline+=%#warningmsg#
+set statusline+=%{SyntasticStatuslineFlag()}
+set statusline+=%*
+
+let g:syntastic_always_populate_loc_list = 1
+let g:syntastic_auto_loc_list = 1
+let g:syntastic_check_on_open = 1
+let g:syntastic_check_on_wq = 0
+
+let g:syntastic_javascript_checkers = ['jshint']
+let g:syntastic_css_checkers = ['csslint']
+let g:syntastic_less_use_less_lint
 
 " Toggle paste mode
 set pastetoggle=<leader>p
@@ -86,4 +104,7 @@ set backspace=indent,eol,start
 " behavior settings
 set nowrap
 set foldmethod=indent
-set nobackup
+set backup
+
+" language based macros
+imap cll console.log();<Esc><Left>i
