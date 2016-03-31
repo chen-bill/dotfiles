@@ -12,6 +12,7 @@ call vundle#begin()
         Plugin 'scwood/vim-hybrid'
         Plugin 'vim-airline/vim-airline'
         Plugin 'vim-airline/vim-airline-themes'
+        Plugin 'Yggdroot/indentLine.git'
 
     " I'm lazy
         Plugin 'jiangmiao/auto-pairs'
@@ -33,6 +34,8 @@ call vundle#begin()
     " Disabled
         " Plugin 'wookiehangover/jshint.vim'
         " Plugin 'Valloric/YouCompleteMe'           " autocomplete
+        " Plugin 'SirVer/ultisnips.git'           " java snippest
+        " Plugin 'honza/vim-snippets'
     
     call vundle#end()         
     filetype plugin indent on
@@ -73,6 +76,11 @@ call vundle#begin()
         let g:syntastic_css_checkers = ['csslint']
         " let g:syntastic_mode_map = { 'passive_filetypes': ['python']  }
         " disables syntastic for python
+    
+    " vertical line indentation
+    let g:indentLine_color_term = 239
+    let g:indentLine_color_gui = '#09AA08'
+    let g:indentLine_char = '│'
 
     " Pretty Javascript
     map <c-a> :call JsBeautify()<cr>
@@ -84,19 +92,52 @@ call vundle#begin()
     " pretty/UI
         set background=dark
         colorscheme hybrid
-        set history=50		" keep 50 lines of command line history
-        set ruler 		" shows cursor
-        set showcmd		" display incomplete commands
+        set history=50      " keep 50 lines of command line history
+        set ruler       " shows cursor
+        set showcmd     " display incomplete commands
 
     " search
         set ignorecase          " ignorecase for search
         set smartcase           " case sensitive if at least one is capitalized
-        set incsearch		" do incremental searching
+        set incsearch       " do incremental searching
+
+    " compiler
+        map <F8> :call CompileRunGcc()<CR>
+        func! CompileRunGcc()
+            exec "w"
+            exec "!clear"
+            if &filetype == 'c'
+                exec "!gcc % -o %<"
+                exec "!time ./%<"
+            elseif &filetype == 'cpp'
+                exec "!g++ % -o %<"
+                exec "!time ./%<"
+            elseif &filetype == 'java'
+                exec "!javac %"
+                exec "!time java -cp %:p:h %:t:r"
+            elseif &filetype == 'sh'
+                exec "!time bash %"
+            elseif &filetype == 'python'
+                exec "!time python2.7 %"
+            elseif &filetype == 'html'
+                exec "!firefox % &"
+            elseif &filetype == 'go'
+                exec "!go build %<"
+                exec "!time go run %"
+            elseif &filetype == 'mkd'
+                exec "!~/.vim/markdown.pl % > %.html &"
+                exec "!firefox %.html &"
+            endif
+        endfunc
 
     " Toggle paste mode
         set pastetoggle=<leader>p
-        set tabstop=8 softtabstop=0 expandtab shiftwidth=4 smarttab
+		set tabstop=8 softtabstop=0 expandtab shiftwidth=4 smarttab
         set backspace=indent,eol,start
+
+    " Better tabs
+        " use 4 spaces for tabs
+        set tabstop=4 softtabstop=4 shiftwidth=4
 
     " behavior settings
         set nowrap
@@ -112,7 +153,7 @@ call vundle#begin()
     " Vim traversal
         nmap <C-tab> i<tab><Esc>
         map <C-u> 5<C-y>
-    	map <C-d> 5<C-e>
+        map <C-d> 5<C-e>
         map <C-b> 20<C-e>
         map <C-f> 20<C-y>
 
@@ -122,3 +163,5 @@ call vundle#begin()
 
     " Other
         map <M-w> :w
+        nmap <space> :
+        set showcmd
