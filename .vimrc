@@ -23,6 +23,7 @@ call vundle#begin()
         Plugin 'jeffkreeftmeijer/vim-numbertoggle'      " toggleline numbers
         Plugin 'ajh17/VimCompletesMe'                   " autocomplete
         Plugin 'easymotion/vim-easymotion'
+        Plugin 'rking/ag.vim'
 
     " language specific
         Plugin 'maksimr/vim-jsbeautify'
@@ -154,14 +155,24 @@ call vundle#begin()
         nmap <C-tab> i<tab><Esc>
         map <C-u> 5<C-y>
         map <C-d> 5<C-e>
-        map <C-b> 20<C-e>
-        map <C-f> 20<C-y>
+        map <C-f> 20<C-e>
+        map <C-b> 20<C-y>
 
+    " Vim Navigation
+        nnoremap <tab> <C-w>w
+        nnoremap <S-tab> <C-w>W
+    
     " Vim Language Specific
-        imap cll console.log();<Esc><Left>i
-        imap <C-z> <C-w>
+        " Javascript
+            imap cll console.log();<Esc><Left>i
+            imap <C-z> <C-w>
+        " Java
+            imap sypl System.out.println();<Esc><Left>i
 
     " Other
+        let mapleader = " "
         map <M-w> :w
-        nmap <space> :
         set showcmd
+        " visual
+            vnoremap / <Esc>/\%><C-R>=line("'<")-1<CR>l\%<<C-R>=line("'>")+1<CR>l
+			vnoremap ? <Esc>?\%><C-R>=line("'<")-1<CR>l\%<<C-R>=line("'>")+1<CR>l
