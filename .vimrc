@@ -40,7 +40,6 @@ call vundle#begin()
     
     call vundle#end()         
     filetype plugin indent on
-
     syntax on
 
 " Plugin Settings
@@ -75,19 +74,25 @@ call vundle#begin()
 
         let g:syntastic_javascript_checkers = ['jshint']
         let g:syntastic_css_checkers = ['csslint']
-        " let g:syntastic_mode_map = { 'passive_filetypes': ['python']  }
-        " disables syntastic for python
+        let g:syntastic_mode_map = { 'passive_filetypes': ['java']  }
+        " disables syntastic for java because I have eclim
     
     " vertical line indentation
-    let g:indentLine_color_term = 239
-    let g:indentLine_color_gui = '#09AA08'
-    let g:indentLine_char = '│'
+        let g:indentLine_color_term = 239
+        let g:indentLine_color_gui = '#09AA08'
+        let g:indentLine_char = '│'
 
     " Pretty Javascript
     map <c-a> :call JsBeautify()<cr>
 
+    " You Complete me
+    let g:ycm_filetype_blacklist = { 'java': 1 }
+
     " Autocomplete
     autocmd FileType text,markdown let b:vcm_tab_complete = 'dict'
+
+    " Autocomplete - Eclim
+    autocmd FileType java inoremap <leader><tab> <C-x><C-u>
 
 " Native vim settings
     " pretty/UI
