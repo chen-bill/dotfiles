@@ -23,8 +23,9 @@ call vundle#begin()
         Plugin 'jeffkreeftmeijer/vim-numbertoggle'      " toggleline numbers
         Plugin 'ajh17/VimCompletesMe'                   " autocomplete
         Plugin 'easymotion/vim-easymotion'
-        Plugin 'rking/ag.vim'
+        Plugin 'rking/ag.vim'                           " silver search
         Plugin 'tpope/vim-surround'                     " cs'(
+        Plugin 'itchyny/vim-cursorword'                 " underlines like words
 
     " language specific
         Plugin 'maksimr/vim-jsbeautify'
@@ -33,6 +34,8 @@ call vundle#begin()
         Plugin 'gregsexton/MatchTag'            " html tag colouring
         Plugin 'rstacruz/sparkup'               " html autocomplete, div <C+E>
         Plugin 'terryma/vim-multiple-cursors'   " multiple cursors
+        Plugin 'lfv89/vim-interestingwords'     " highlight search silimar words <leader>k, <leader>K
+        Plugin 'chrisbra/Colorizer'             " :ColorToggle
 
     " Other
         Plugin 'wikitopian/hardmode'            " :call HardMode(), :call EasyMode()
@@ -55,17 +58,11 @@ call vundle#begin()
         let g:airline_theme = 'bubblegum'
 
     " Easymotion
-        " <Leader>f{char} to move to {char}
-        "map  <Leader>f <Plug>(easymotion-bd-f)
-        "nmap <Leader>f <Plug>(easymotion-overwin-f)
         " s{char}{char} to move to {char}{char}
         nmap s <Plug>(easymotion-overwin-f2)
         " Move to line
         map <Leader>L <Plug>(easymotion-bd-jk)
         nmap L <Plug>(easymotion-overwin-line)
-        " Move to word
-        "map  <Leader>w <Plug>(easymotion-bd-w)
-        "nmap <Leader>w <Plug>(easymotion-overwin-w)
 
     " Syntastic 
         set statusline+=%#warningmsg#
@@ -117,7 +114,7 @@ call vundle#begin()
     " search
         set ignorecase          " ignorecase for search
         set smartcase           " case sensitive if at least one is capitalized
-        set incsearch       " do incremental searching
+        set hlsearch            " do incremental searching
 
     " compiler
         map <F8> :call CompileRunGcc()<CR>
@@ -162,6 +159,8 @@ call vundle#begin()
         set foldmethod=indent
         set backup
         set number
+        set showcmd
+        set sidescroll=1
 
 " Macros/Mappings
     " Plugin Mappings
@@ -170,7 +169,6 @@ call vundle#begin()
         map <leader>R :SyntasticReset<cr>
 
     " Vim traversal
-        nmap <C-tab> i<tab><Esc>
         map <C-u> 10<C-y>
         map <C-d> 10<C-e>
         map <C-f> 30<C-e>
@@ -185,17 +183,18 @@ call vundle#begin()
         nmap <leader>, :vertical resize -5<cr>
         nmap <leader>= :resize +5<cr>
         nmap <leader>- :resize -5<cr>
+
+    " Vim copy/pasting
+        xnoremap p "_dP
     
     " Vim Language Specific
         " Javascript
             imap cll console.log();<Esc><Left>i
-            imap <C-z> <C-w>
         " Java
-            imap sypl System.out.println();<Esc><Left>i
+            imap sysout System.out.println();<Esc><Left>i
 
     " Other
-         map <M-w> :w
-         set showcmd
+        map <M-w> :w
 
         " visual
             vnoremap / <Esc>/\%><C-R>=line("'<")-1<CR>l\%<<C-R>=line("'>")+1<CR>l
