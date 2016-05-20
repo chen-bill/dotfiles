@@ -30,12 +30,13 @@ call vundle#begin()
     " language specific
         Plugin 'maksimr/vim-jsbeautify'
         Plugin 'pangloss/vim-javascript'
-        Plugin 'jelera/vim-javascript-syntax'   " javascript bracket matching
-        Plugin 'gregsexton/MatchTag'            " html tag colouring
-        Plugin 'rstacruz/sparkup'               " html autocomplete, div <C+E>
-        Plugin 'terryma/vim-multiple-cursors'   " multiple cursors
-        Plugin 'lfv89/vim-interestingwords'     " highlight search silimar words <leader>k, <leader>K
-        Plugin 'chrisbra/Colorizer'             " :ColorToggle
+        Plugin 'jelera/vim-javascript-syntax'       " javascript bracket matching
+        Plugin 'gregsexton/MatchTag'                " html tag colouring
+        Plugin 'rstacruz/sparkup'                   " html autocomplete, div <C+E>
+        Plugin 'terryma/vim-multiple-cursors'       " multiple cursors
+        Plugin 'lfv89/vim-interestingwords'         " highlight search silimar words <leader>k, <leader>K
+        Plugin 'suan/vim-instant-markdown'          " markdown
+
 
     " Other
         Plugin 'wikitopian/hardmode'            " :call HardMode(), :call EasyMode()
@@ -92,8 +93,6 @@ call vundle#begin()
 
     " Autocomplete
     autocmd FileType text,markdown let b:vcm_tab_complete = 'dict'
-
-    " Autocomplete - Eclim
     autocmd FileType java inoremap <leader><tab> <C-x><C-u>
 
     " Multiple cursors
@@ -102,6 +101,9 @@ call vundle#begin()
         let g:multi_cursor_prev_key='<C-k>'
         let g:multi_cursor_skip_key='<C-x>'
         let g:multi_cursor_quit_key='<Esc>'
+
+    "" Markdown
+        "let vim_markdown_preview_hotkey='<leader>m'
 
 " Native vim settings
     " pretty/UI
@@ -114,7 +116,7 @@ call vundle#begin()
     " search
         set ignorecase          " ignorecase for search
         set smartcase           " case sensitive if at least one is capitalized
-        set hlsearch            " do incremental searching
+        set incsearch            " do incremental searching
 
     " compiler
         map <F8> :call CompileRunGcc()<CR>
@@ -125,7 +127,9 @@ call vundle#begin()
                 exec "!gcc % -o %<"
                 exec "!time ./%<"
             elseif &filetype == 'cpp'
-                exec "!g++ % -o %<"
+                "exec !g++ % -o %<
+                "exec !g++ -std=c++14 % -o %< -Wall -Wextra -Wconversion
+                exec "!g++ -std=c++14 % -o %<"
                 exec "!time ./%<"
             elseif &filetype == 'java'
                 exec "!javac %"
@@ -158,6 +162,8 @@ call vundle#begin()
         set nowrap
         set foldmethod=indent
         set backup
+        set backupdir=~/.vimBackup
+        set noswapfile
         set number
         set showcmd
         set sidescroll=1
