@@ -4,12 +4,13 @@ filetype off
 
 set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
-" Plugins
+
     " :PluginInstall
         Plugin 'VundleVim/Vundle.vim'
 
     " Pretty
         Plugin 'scwood/vim-hybrid'
+        "Plugin 'sickill/vim-monokai'
         Plugin 'vim-airline/vim-airline'
         Plugin 'vim-airline/vim-airline-themes'
         Plugin 'Yggdroot/indentLine.git'
@@ -51,6 +52,38 @@ call vundle#begin()
     filetype plugin indent on
     syntax on
 
+" custom functions
+    " compiler
+        map <F8> :call CompileRunGcc()<CR>
+        func! CompileRunGcc()
+            exec "w"
+            exec "!clear"
+            if &filetype == 'c'
+                exec "!gcc % -o %<"
+                exec "!time ./%<"
+            elseif &filetype == 'cpp'
+                "exec !g++ % -o %<
+                "exec !g++ -std=c++14 % -o %< -Wall -Wextra -Wconversion
+                exec "!g++ -std=c++14 % -o %<"
+                exec "!time ./%<"
+            elseif &filetype == 'java'
+                exec "!javac %"
+                exec "!time java -cp %:p:h %:t:r"
+            elseif &filetype == 'sh'
+                exec "!time bash %"
+            elseif &filetype == 'python'
+                exec "!time python2.7 %"
+            elseif &filetype == 'html'
+                exec "!firefox % &"
+            elseif &filetype == 'go'
+                exec "!go build %<"
+                exec "!time go run %"
+            elseif &filetype == 'mkd'
+                exec "!~/.vim/markdown.pl % > %.html &"
+                exec "!firefox %.html &"
+            endif
+        endfunc
+
 " Plugin Settings
     " Airline setings
         set laststatus=2
@@ -65,6 +98,10 @@ call vundle#begin()
         map <Leader>L <Plug>(easymotion-bd-jk)
         nmap L <Plug>(easymotion-overwin-line)
 
+    " NerdTree
+        let NERDTreeShowLineNumbers=1
+        autocmd FileType nerdtree setlocal relativenumber
+
     " Syntastic 
         set statusline+=%#warningmsg#
         set statusline+=%{SyntasticStatuslineFlag()}
@@ -76,6 +113,8 @@ call vundle#begin()
         let g:syntastic_check_on_wq = 0
 
         let g:syntastic_javascript_checkers = ['jshint']
+        let g:syntastic_cpp_compiler = 'clang++'
+        let g:syntastic_cpp_compiler_options = ' -std=c++11 -stdlib=libc++'
         let g:syntastic_css_checkers = ['csslint']
         let g:syntastic_mode_map = { 'passive_filetypes': ['java']  }
         " disables syntastic for java because I have eclim
@@ -118,36 +157,6 @@ call vundle#begin()
         set smartcase           " case sensitive if at least one is capitalized
         set incsearch            " do incremental searching
 
-    " compiler
-        map <F8> :call CompileRunGcc()<CR>
-        func! CompileRunGcc()
-            exec "w"
-            exec "!clear"
-            if &filetype == 'c'
-                exec "!gcc % -o %<"
-                exec "!time ./%<"
-            elseif &filetype == 'cpp'
-                "exec !g++ % -o %<
-                "exec !g++ -std=c++14 % -o %< -Wall -Wextra -Wconversion
-                exec "!g++ -std=c++14 % -o %<"
-                exec "!time ./%<"
-            elseif &filetype == 'java'
-                exec "!javac %"
-                exec "!time java -cp %:p:h %:t:r"
-            elseif &filetype == 'sh'
-                exec "!time bash %"
-            elseif &filetype == 'python'
-                exec "!time python2.7 %"
-            elseif &filetype == 'html'
-                exec "!firefox % &"
-            elseif &filetype == 'go'
-                exec "!go build %<"
-                exec "!time go run %"
-            elseif &filetype == 'mkd'
-                exec "!~/.vim/markdown.pl % > %.html &"
-                exec "!firefox %.html &"
-            endif
-        endfunc
 
     " Toggle paste mode
         set pastetoggle=<leader>p
@@ -167,6 +176,7 @@ call vundle#begin()
         set number
         set showcmd
         set sidescroll=1
+        set cm=blowfish    " passwords
 
 " Macros/Mappings
     " Plugin Mappings
@@ -179,6 +189,10 @@ call vundle#begin()
         map <C-d> 10<C-e>
         map <C-f> 30<C-e>
         map <C-b> 30<C-y>
+        map <up> <nop>
+		map <down> <nop>
+		map <left> <nop>
+		map <right> <nop>
 
     " Vim Navigation
         nnoremap <tab> <C-w>w
@@ -197,7 +211,7 @@ call vundle#begin()
         " Javascript
             imap cll console.log();<Esc><Left>i
         " Java
-            imap sysout System.out.println();<Esc><Left>i
+            imap sysout System.out.println();<Esc>hi
 
     " Other
         map <M-w> :w
