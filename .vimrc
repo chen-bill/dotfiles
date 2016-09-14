@@ -1,3 +1,7 @@
+if $COLORTERM == 'gnome-terminal'
+    set t_Co=256
+endif
+
 " uses vim settings instead of vi settings
 set nocompatible 
 filetype off
@@ -16,8 +20,8 @@ call vundle#begin()
         Plugin 'Yggdroot/indentLine.git'
 
     " I'm lazy
-        Plugin 'jiangmiao/auto-pairs'
-        Plugin 'kien/ctrlp.vim'
+        Plugin 'jiangmiao/auto-pairs'                   " matching brackets and quotes
+        Plugin 'kien/ctrlp.vim'                         " searches all instances
         Plugin 'scrooloose/nerdcommenter'               " ezpz comments
         Plugin 'scrooloose/syntastic'                   " compiler-esque
         Plugin 'scrooloose/nerdtree'                    " blessed tree
@@ -27,6 +31,8 @@ call vundle#begin()
         Plugin 'rking/ag.vim'                           " silver search
         Plugin 'tpope/vim-surround'                     " cs'(
         Plugin 'itchyny/vim-cursorword'                 " underlines like words
+        Plugin 'mbbill/undotree'                        " trees dope
+
 
     " language specific
         Plugin 'maksimr/vim-jsbeautify'
@@ -178,11 +184,18 @@ call vundle#begin()
         set sidescroll=1
         set cm=blowfish    " passwords
 
+    " undotree
+        if has("persistent_undo")
+            set undodir=~/.undodir/
+            set undofile
+        endif
+
 " Macros/Mappings
     " Plugin Mappings
         map <F2> :NERDTreeToggle<cr>
         map <leader>nt :NERDTree %:p:h<cr>
         map <leader>R :SyntasticReset<cr>
+        map <F3> :UndotreeToggle<cr>
 
     " Vim traversal
         map <C-u> 10<C-y>
