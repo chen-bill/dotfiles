@@ -1,7 +1,3 @@
-if $COLORTERM == 'gnome-terminal'
-    set t_Co=256
-endif
-
 " uses vim settings instead of vi settings
 set nocompatible 
 filetype off
@@ -23,7 +19,6 @@ call vundle#begin()
         Plugin 'jiangmiao/auto-pairs'                   " matching brackets and quotes
         Plugin 'kien/ctrlp.vim'                         " searches all instances
         Plugin 'scrooloose/nerdcommenter'               " ezpz comments
-        Plugin 'scrooloose/syntastic'                   " compiler-esque
         Plugin 'scrooloose/nerdtree'                    " blessed tree
         Plugin 'jeffkreeftmeijer/vim-numbertoggle'      " toggleline numbers
         Plugin 'ajh17/VimCompletesMe'                   " autocomplete
@@ -32,23 +27,25 @@ call vundle#begin()
         Plugin 'tpope/vim-surround'                     " cs'(
         Plugin 'itchyny/vim-cursorword'                 " underlines like words
         Plugin 'mbbill/undotree'                        " trees dope
-
-
-    " language specific
-        Plugin 'maksimr/vim-jsbeautify'
-        Plugin 'pangloss/vim-javascript'
-        Plugin 'jelera/vim-javascript-syntax'       " javascript bracket matching
-        Plugin 'gregsexton/MatchTag'                " html tag colouring
-        Plugin 'rstacruz/sparkup'                   " html autocomplete, div <C+E>
         Plugin 'terryma/vim-multiple-cursors'       " multiple cursors
         Plugin 'lfv89/vim-interestingwords'         " highlight search silimar words <leader>k, <leader>K
-        Plugin 'suan/vim-instant-markdown'          " markdown
+
+        Plugin 'scrooloose/syntastic'                   " compiler-esque
+
+    " language specific
+        Plugin 'nvie/vim-flake8'
+        "Plugin 'maksimr/vim-jsbeautify'
+        "Plugin 'pangloss/vim-javascript'
+        "Plugin 'jelera/vim-javascript-syntax'       " javascript bracket matching
+        "Plugin 'gregsexton/MatchTag'                " html tag colouring
+        "Plugin 'rstacruz/sparkup'                   " html autocomplete, div <C+E>
+        "Plugin 'suan/vim-instant-markdown'          " markdown
 
 
     " Other
-        Plugin 'wikitopian/hardmode'            " :call HardMode(), :call EasyMode()
 
     " Disabled
+        " Plugin 'wikitopian/hardmode'            " :call HardMode(), :call EasyMode()
         " Plugin 'wookiehangover/jshint.vim'
         " Plugin 'Valloric/YouCompleteMe'           " autocomplete
         " Plugin 'SirVer/ultisnips.git'           " java snippest
@@ -97,6 +94,9 @@ call vundle#begin()
         let g:airline_left_sep = ''
         let g:airline_theme = 'bubblegum'
 
+    " Flake8
+        let g:flake8_show_in_gutter = 1
+
     " Easymotion
         " s{char}{char} to move to {char}{char}
         nmap s <Plug>(easymotion-overwin-f2)
@@ -119,6 +119,7 @@ call vundle#begin()
         let g:syntastic_check_on_wq = 0
 
         let g:syntastic_javascript_checkers = ['jshint']
+        let g:syntastic_python_checkers = ['flake8']
         let g:syntastic_cpp_compiler = 'clang++'
         let g:syntastic_cpp_compiler_options = ' -std=c++11 -stdlib=libc++'
         let g:syntastic_css_checkers = ['csslint']
@@ -162,11 +163,12 @@ call vundle#begin()
         set ignorecase          " ignorecase for search
         set smartcase           " case sensitive if at least one is capitalized
         set incsearch            " do incremental searching
+        set nohlsearch            " do disable search highlighting
 
 
     " Toggle paste mode
         set pastetoggle=<leader>p
-		set tabstop=8 softtabstop=0 expandtab shiftwidth=4 smarttab
+        set tabstop=8 softtabstop=0 expandtab shiftwidth=4 smarttab
         set backspace=indent,eol,start
 
     " Better tabs
@@ -182,7 +184,7 @@ call vundle#begin()
         set number
         set showcmd
         set sidescroll=1
-        set cm=blowfish    " passwords
+        set shell=/bin/zsh
 
     " undotree
         if has("persistent_undo")
@@ -192,10 +194,9 @@ call vundle#begin()
 
 " Macros/Mappings
     " Plugin Mappings
-        map <F2> :NERDTreeToggle<cr>
-        map <leader>nt :NERDTree %:p:h<cr>
-        map <leader>R :SyntasticReset<cr>
+        map <F2> :NERDTreeFind<cr>
         map <F3> :UndotreeToggle<cr>
+        map <leader>R :SyntasticReset<cr>
 
     " Vim traversal
         map <C-u> 10<C-y>
@@ -203,19 +204,22 @@ call vundle#begin()
         map <C-f> 30<C-e>
         map <C-b> 30<C-y>
         map <up> <nop>
-		map <down> <nop>
-		map <left> <nop>
-		map <right> <nop>
+        map <down> <nop>
+        map <left> <nop>
+        map <right> <nop>
 
     " Vim Navigation
         nnoremap <tab> <C-w>w
         nnoremap <S-tab> <C-w>W
 
     " Vim windows
-        nmap <leader>. :vertical resize +5<cr>
-        nmap <leader>, :vertical resize -5<cr>
-        nmap <leader>= :resize +5<cr>
-        nmap <leader>- :resize -5<cr>
+        " resize horzontal split window
+        nmap <Left> :vertical resize +5<cr>
+        nmap <Right> :vertical resize -5<cr>
+
+        " resize vertical split window
+        nmap <Up> :vertical resize +5<cr>
+        nmap <Down> :vertical resize -5<cr>
 
     " Vim copy/pasting
         xnoremap p "_dP
@@ -231,4 +235,5 @@ call vundle#begin()
 
         " visual
             vnoremap / <Esc>/\%><C-R>=line("'<")-1<CR>l\%<<C-R>=line("'>")+1<CR>l
-			vnoremap ? <Esc>?\%><C-R>=line("'<")-1<CR>l\%<<C-R>=line("'>")+1<CR>l
+            vnoremap ? <Esc>?\%><C-R>=line("'<")-1<CR>l\%<<C-R>=line("'>")+1<CR>l
+
