@@ -2,11 +2,12 @@
 # export PATH=$HOME/bin:/usr/local/bin:$PATH
 
 # Path to your oh-my-zsh installation.
-export ZSH=/Users/billchen/.oh-my-zsh
-
+export ZSH=/Users/cbill/.oh-my-zsh
+#
 # Set name of the theme to load. Optionally, if you set this to "random"
 # it'll load a random theme each time that oh-my-zsh is loaded.
 # See https://github.com/robbyrussell/oh-my-zsh/wiki/Themes
+#ZSH_THEME="robbyrussell"
 ZSH_THEME="ys"
 
 # Uncomment the following line to use case-sensitive completion.
@@ -29,10 +30,10 @@ ZSH_THEME="ys"
 # DISABLE_AUTO_TITLE="true"
 
 # Uncomment the following line to enable command auto-correction.
-# ENABLE_CORRECTION="true"
+ENABLE_CORRECTION="true"
 
 # Uncomment the following line to display red dots whilst waiting for completion.
-# COMPLETION_WAITING_DOTS="true"
+COMPLETION_WAITING_DOTS="true"
 
 # Uncomment the following line if you want to disable marking untracked files
 # under VCS as dirty. This makes repository status check for large repositories
@@ -51,7 +52,7 @@ ZSH_THEME="ys"
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(git)
+plugins=(git zsh-syntax-highlighting)
 
 source $ZSH/oh-my-zsh.sh
 
@@ -84,11 +85,15 @@ source $ZSH/oh-my-zsh.sh
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 
-# go
-export GOROOT=/usr/local/opt/go/libexec
-export GOPATH=$HOME/Yahoo
-export PATH=$PATH:$GOROOT/bin:$GOPATH/bin
-export REDIS_CLIENT="localhost:6379"
+
+# GOPATH
+export GOPATH="$HOME/gocode"
+export PATH="$PATH:$GOPATH/bin"
+
+# cadence settings
+export CADENCE_CLI_ENV=development
+
+eval "$(direnv hook zsh)"
 
 alias dockerstopall='docker kill $(docker ps -q)'
 alias dockerrmall='docker rm $(docker ps -a -q)'
@@ -99,5 +104,11 @@ if type nvim > /dev/null 2>&1; then
   alias vim='nvim'
 fi
 
-alias kubeinit='kubectl config set users.yby.${USER}.token $(zms-cli get-user-token | cut -d" " -f2)'
-eval "$(chef shell-init zsh)"
+HISTFILE=~/.zsh_history
+HISTSIZE=1000000
+SAVEHIST=$HISTSIZE
+
+setopt NO_BEEP
+
+# Report CPU Usuage for commands running longer than 10 seconds
+REPORTTIME=10
